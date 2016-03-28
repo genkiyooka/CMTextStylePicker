@@ -27,16 +27,20 @@
 #import "IPadDemoViewController.h"
 
 @interface  IPadDemoViewController ()
-@property (nonatomic, retain)	UIPopoverController	*currentPopoverController;
-@property (nonatomic, retain)	UIFont				*defaultFont;
-@property (nonatomic, retain)	UIColor				*defaultTextColor;
+@property (nonatomic,assign) CGFloat mainTextViewOriginalHeight;
+@property (ARC_PROP_STRONG)	UIPopoverController	*currentPopoverController;
+@property (ARC_PROP_STRONG)	UIFont				*defaultFont;
+@property (ARC_PROP_STRONG)	UIColor				*defaultTextColor;
 @end
 
 
 @implementation IPadDemoViewController
 
-@synthesize currentPopoverController, defaultFont, defaultTextColor;
-@synthesize mainTextView;
+ARC_SYNTHESIZEAUTO(mainTextView);
+ARC_SYNTHESIZEAUTO(mainTextViewOriginalHeight);
+ARC_SYNTHESIZEAUTO(currentPopoverController);
+ARC_SYNTHESIZEAUTO(defaultFont);
+ARC_SYNTHESIZEAUTO(defaultTextColor);
 
 - (IBAction)actionsButtonPressed:(id)sender {
 	if (self.currentPopoverController) {
@@ -46,22 +50,19 @@
 	else {
 		CMTextStylePickerViewController *textStylePickerViewController = [CMTextStylePickerViewController textStylePickerViewController];
 		textStylePickerViewController.delegate = self;
-		textStylePickerViewController.selectedTextColour = mainTextView.textColor;
-		textStylePickerViewController.selectedFont = mainTextView.font;
-		if ([mainTextView.textColor isEqual:defaultTextColor] && [mainTextView.font isEqual:defaultFont]) {
+		textStylePickerViewController.selectedTextColour = self.mainTextView.textColor;
+		textStylePickerViewController.selectedFont = self.mainTextView.font;
+		if ([self.mainTextView.textColor isEqual:self.defaultTextColor] && [self.mainTextView.font isEqual:self.defaultFont]) {
 			textStylePickerViewController.defaultSettingsSwitchValue = YES;
 		}
 		else {
 			textStylePickerViewController.defaultSettingsSwitchValue = NO;
 		}
 		
-		UINavigationController *actionsNavigationController = [[[UINavigationController alloc] initWithRootViewController:textStylePickerViewController]
-															   autorelease];
-		
+		UINavigationController *actionsNavigationController = ARC_AUTORELEASE([[UINavigationController alloc] initWithRootViewController:textStylePickerViewController]);
 		Class classPopoverController = NSClassFromString(@"UIPopoverController");
 		if (classPopoverController) {
-			UIPopoverController *popoverController = [[[classPopoverController alloc] initWithContentViewController:actionsNavigationController]
-													  autorelease];
+			UIPopoverController *popoverController = ARC_AUTORELEASE([[classPopoverController alloc] initWithContentViewController:actionsNavigationController]);
 			popoverController.delegate = self;
 			[popoverController presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
 									  permittedArrowDirections:UIPopoverArrowDirectionAny
@@ -93,18 +94,18 @@
 	[UIView setAnimationDuration:animationDuration];
 	[UIView setAnimationCurve:animationCurve];
 	
-	CGRect newFrame = mainTextView.frame;
+	CGRect newFrame = self.mainTextView.frame;
 	CGRect keyboardFrame = [self.view convertRect:keyboardEndFrame toView:nil];
 	
 	if (up) {
-		mainTextViewOriginalHeight = newFrame.size.height;
+		self.mainTextViewOriginalHeight = newFrame.size.height;
 		newFrame.size.height -= keyboardFrame.size.height;
 	}
 	else {
-		newFrame.size.height = mainTextViewOriginalHeight;
+		newFrame.size.height = self.mainTextViewOriginalHeight;
 	}
 	
-	mainTextView.frame = newFrame;
+	self.mainTextView.frame = newFrame;
 	
 	[UIView commitAnimations];
 }
@@ -114,23 +115,23 @@
 #pragma mark CMTextStylePickerViewControllerDelegate methods
 
 - (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController userSelectedFont:(UIFont *)font {
-	mainTextView.font = font;
+	self.mainTextView.font = font;
 }
 
 - (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController userSelectedTextColor:(UIColor *)textColor {
-	mainTextView.textColor = textColor;
+	self.mainTextView.textColor = textColor;
 }
 
 - (void)textStylePickerViewControllerSelectedCustomStyle:(CMTextStylePickerViewController *)textStylePickerViewController {
 	// Use custom text style
-	mainTextView.font = textStylePickerViewController.selectedFont;
-	mainTextView.textColor = textStylePickerViewController.selectedTextColour;
+	self.mainTextView.font = textStylePickerViewController.selectedFont;
+	self.mainTextView.textColor = textStylePickerViewController.selectedTextColour;
 }
 
 - (void)textStylePickerViewControllerSelectedDefaultStyle:(CMTextStylePickerViewController *)textStylePickerViewController {
 	// Use default text style
-	mainTextView.font = self.defaultFont;
-	mainTextView.textColor = self.defaultTextColor;
+	self.mainTextView.font = self.defaultFont;
+	self.mainTextView.textColor = self.defaultTextColor;
 }
 
 - (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController replaceDefaultStyleWithFont:(UIFont *)font textColor:(UIColor *)textColor {
@@ -176,8 +177,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.defaultFont = mainTextView.font;
-	self.defaultTextColor = mainTextView.textColor;
+	self.defaultFont = self.mainTextView.font;
+	self.defaultTextColor = self.mainTextView.textColor;
 	
 	// Subscribe to keyboard visible notifications (so we can adjust the text view scrollable area)
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -216,12 +217,11 @@
 
 
 - (void)dealloc {
-	[currentPopoverController release];
-	[defaultFont release];
-	[defaultTextColor release];
-	[mainTextView release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.mainTextView);
+	ARC_DEALLOC_NIL(self.currentPopoverController);
+	ARC_DEALLOC_NIL(self.defaultFont);
+	ARC_DEALLOC_NIL(self.defaultTextColor);
+	ARC_SUPERDEALLOC(self);
 }
 
 

@@ -29,15 +29,20 @@
 @protocol CMFontStyleSelectTableViewControllerDelegate;
 
 
-@interface CMFontStyleSelectTableViewController : UITableViewController {
+@interface CMFontStyleSelectTableViewController : UITableViewController
 
-}
+ARC_BEGIN_IVAR_DECL(CMFontSelectTableViewController)
+ARC_IVAR_DECLAREOUTLET(id<CMFontStyleSelectTableViewControllerDelegate>,delegate);
+ARC_IVAR_DECLAREAUTO(NSString*,fontFamilyName);
+ARC_IVAR_DECLAREAUTO(NSArray*,fontNames);
+ARC_IVAR_DECLAREAUTO(UIFont*,selectedFont);
+ARC_END_IVAR_DECL(CMFontSelectTableViewController)
 
-@property (nonatomic, assign)	id<CMFontStyleSelectTableViewControllerDelegate>	delegate;
+@property (ARC_PROP_OUTLET)	id<CMFontStyleSelectTableViewControllerDelegate>	delegate;
 
-@property (nonatomic, retain)	NSString			*fontFamilyName;
-@property (nonatomic, retain)	NSArray				*fontNames;
-@property (nonatomic, retain)	UIFont				*selectedFont;
+@property (ARC_PROP_STRONG)	NSString			*fontFamilyName;
+@property (ARC_PROP_STRONG)	NSArray				*fontNames;
+@property (ARC_PROP_STRONG)	UIFont				*selectedFont;
 
 @end
 

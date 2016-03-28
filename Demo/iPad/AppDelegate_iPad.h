@@ -28,12 +28,15 @@
 
 @class IPadDemoViewController;
 
-@interface AppDelegate_iPad : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-}
+@interface AppDelegate_iPad : NSObject <UIApplicationDelegate>
 
-@property (nonatomic, retain) IBOutlet	IPadDemoViewController	*iPadDemoViewController;
-@property (nonatomic, retain) IBOutlet	UIWindow				*window;
+ARC_BEGIN_IVAR_DECL(AppDelegate_iPad)
+ARC_IVAR_DECLAREAUTO(IPadDemoViewController*,iPadDemoViewController);
+ARC_IVAR_DECLAREAUTO(UIWindow*,window);
+ARC_END_IVAR_DECL(AppDelegate_iPad)
+
+@property (ARC_PROP_STRONG) IBOutlet	IPadDemoViewController	*iPadDemoViewController;
+@property (ARC_PROP_STRONG) IBOutlet	UIWindow				*window;
 
 @end
 

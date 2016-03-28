@@ -3,6 +3,9 @@
 //
 
 #ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
+	#import "RequiredFoundation.h"
+	#import "RequiredNoARC.h"
+    #import "RequiredAppUIKit.h"
+#else
+	#include "RequiredCoreFoundation.h"
 #endif

@@ -49,9 +49,7 @@
 		textStylePickerViewController.defaultSettingsSwitchValue = NO;
 	}
 	
-	UINavigationController *actionsNavigationController = [[[UINavigationController alloc] initWithRootViewController:textStylePickerViewController]
-														   autorelease];
-
+	UINavigationController *actionsNavigationController = ARC_AUTORELEASE([[UINavigationController alloc] initWithRootViewController:textStylePickerViewController]);
 	[self presentModalViewController:actionsNavigationController animated:YES];
 }
 
@@ -60,11 +58,10 @@
 }
 
 - (void)addKeyboardDoneButton {
-	UIBarButtonItem *flexiButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *flexiButtonItem = ARC_AUTORELEASE([[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]);
+	UIBarButtonItem *doneButtonItem = ARC_AUTORELEASE([[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																					target:self
-																					action:@selector(keyboardDoneButtonAction)]
-									   autorelease];
+																					action:@selector(keyboardDoneButtonAction)]);
 	[topToolbar setItems:[NSArray arrayWithObjects:flexiButtonItem, doneButtonItem, nil] animated:YES];
 }
 
@@ -217,11 +214,10 @@
 
 
 - (void)dealloc {
-	[bottomToolbar release];
-	[mainTextView release];
-	[topToolbar release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.bottomToolbar);
+	ARC_DEALLOC_NIL(self.mainTextView);
+	ARC_DEALLOC_NIL(self.topToolbar);
+	ARC_SUPERDEALLOC(self);
 }
 
 

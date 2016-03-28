@@ -23,7 +23,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-
+#import "RequiredFoundation.h"
 #import <UIKit/UIKit.h>
 
 #import "CMColourSelectTableViewController.h"
@@ -34,26 +34,41 @@
 @class CMColourBlockView;
 @protocol CMTextStylePickerViewControllerDelegate;
 
-@interface CMTextStylePickerViewController : UITableViewController <CMFontSelectTableViewControllerDelegate, CMColourSelectTableViewControllerDelegate> {
+@interface CMTextStylePickerViewController : UITableViewController <CMFontSelectTableViewControllerDelegate, CMColourSelectTableViewControllerDelegate> 
 
-}
+ARC_BEGIN_IVAR_DECL(CMTextStylePickerViewController)
+ARC_IVAR_DECLAREAUTO(BOOL,defaultSettingsSwitchValue);
+ARC_IVAR_DECLAREAUTO(UIColor*,selectedTextColour);
+ARC_IVAR_DECLAREAUTO(UIFont*,selectedFont);
+ARC_IVAR_DECLAREAUTO(NSArray*,tableLayout);
+ARC_IVAR_DECLAREOUTLET(id<CMTextStylePickerViewControllerDelegate>,delegate);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,applyAsDefaultCell);
+ARC_IVAR_DECLAREOUTLET(UIBarButtonItem*,doneButtonItem);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,colourCell);
+ARC_IVAR_DECLAREOUTLET(CMColourBlockView*,colourView);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,defaultSettingsCell);
+ARC_IVAR_DECLAREOUTLET(UISwitch*,defaultSettingsSwitch);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,fontCell);
+ARC_IVAR_DECLAREOUTLET(CMUpDownControl*,fontSizeControl);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,sizeCell);
+ARC_END_IVAR_DECL(CMTextStylePickerViewController)
 
-@property (nonatomic, assign)	id<CMTextStylePickerViewControllerDelegate> delegate;
+@property (ARC_PROP_OUTLET)		id<CMTextStylePickerViewControllerDelegate> delegate;
 
 @property (nonatomic, assign)	BOOL		defaultSettingsSwitchValue;
-@property (nonatomic, retain)	UIColor		*selectedTextColour;
-@property (nonatomic, retain)	UIFont		*selectedFont;
+@property (ARC_PROP_STRONG)		UIColor		*selectedTextColour;
+@property (ARC_PROP_STRONG)		UIFont		*selectedFont;
 
-@property (nonatomic, retain)	IBOutlet	UITableViewCell		*applyAsDefaultCell;
-@property (nonatomic, retain)	IBOutlet	UIBarButtonItem		*doneButtonItem;
-@property (nonatomic, retain)	IBOutlet	UITableViewCell		*colourCell;
-@property (nonatomic, retain)	IBOutlet	CMColourBlockView	*colourView;
-@property (nonatomic, retain)	IBOutlet	UITableViewCell		*defaultSettingsCell;
-@property (nonatomic, retain)	IBOutlet	UISwitch			*defaultSettingsSwitch;
-@property (nonatomic, retain)	IBOutlet	UITableViewCell		*fontCell;
-@property (nonatomic, retain)	IBOutlet	UILabel				*fontNameLabel;
-@property (nonatomic, retain)	IBOutlet	CMUpDownControl		*fontSizeControl;
-@property (nonatomic, retain)	IBOutlet	UITableViewCell		*sizeCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*applyAsDefaultCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	UIBarButtonItem		*doneButtonItem;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*colourCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	CMColourBlockView	*colourView;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*defaultSettingsCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	UISwitch			*defaultSettingsSwitch;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*fontCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	UILabel				*fontNameLabel;
+@property (ARC_PROP_OUTLET)		IBOutlet	CMUpDownControl		*fontSizeControl;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*sizeCell;
 
 + (CMTextStylePickerViewController *)textStylePickerViewController;
 - (IBAction)doneAction;

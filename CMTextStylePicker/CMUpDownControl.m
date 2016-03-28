@@ -33,23 +33,24 @@
 
 @implementation CMUpDownControl
 
-@synthesize maximumAllowedValue, minimumAllowedValue, value;
-
+ARC_SYNTHESIZEAUTO(maximumAllowedValue);
+ARC_SYNTHESIZEAUTO(minimumAllowedValue);
+ARC_SYNTHESIZEAUTO(value);
 
 - (void)processTouchUp {
 	BOOL valueChanged = NO;
 	
 	if (_topHalfSelected) {
 		// Attempt to increment value
-		if (value < maximumAllowedValue) {
-			value++;
+		if (_value < _maximumAllowedValue) {
+			_value++;
 			valueChanged = YES;
 		}
 	}
 	else {
 		// Attempt to decrement value
-		if (value > minimumAllowedValue) {
-			value--;
+		if (_value > _minimumAllowedValue) {
+			_value--;
 			valueChanged = YES;
 		}
 	}
@@ -287,7 +288,7 @@
 	// Bottom side
 	CGPathAddLineToPoint(upArrowPath, NULL, upArrowRect.origin.x, upArrowRect.origin.y+upArrowRect.size.height);
 	CGPathCloseSubpath(upArrowPath);
-	if (value >= maximumAllowedValue) {
+	if (_value >= _maximumAllowedValue) {
 		// "Disabled"
 		CGContextSetRGBFillColor(c, 195.0/255.0, 199.0/255.0, 204.0/255.0, 1.0);
 	}
@@ -320,7 +321,7 @@
 	// Top side
 	CGPathAddLineToPoint(downArrowPath, NULL, downArrowRect.origin.x+downArrowRect.size.width, downArrowRect.origin.y);
 	CGPathCloseSubpath(downArrowPath);
-	if (value <= minimumAllowedValue) {
+	if (_value <= _minimumAllowedValue) {
 		// "Disabled"
 		CGContextSetRGBFillColor(c, 195.0/255.0, 199.0/255.0, 204.0/255.0, 1.0);
 	}
@@ -340,7 +341,7 @@
 	
 	
 	// Draw text
-	NSString *valueStr = [NSString stringWithFormat:@"%d", value];
+	NSString *valueStr = [NSString stringWithFormat:@"%d", (int)_value];
 	NSString *units = @"pt";
 	
 	[[UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1.0] set];
@@ -371,10 +372,10 @@
 	}
 
 	// "Disable" press if at min or max
-	if (_topHalfSelected && value >= maximumAllowedValue) {
+	if (_topHalfSelected && _value >= _maximumAllowedValue) {
 		return NO;
 	}
-	else if (!_topHalfSelected && value <= minimumAllowedValue) {
+	else if (!_topHalfSelected && _value <= _minimumAllowedValue) {
 		return NO;
 	}
 	

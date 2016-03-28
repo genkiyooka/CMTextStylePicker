@@ -26,49 +26,54 @@
 
 #import "CMColourBlockView.h"
 
+@interface CMColourBlockView()
+@property (ARC_PROP_STRONG) UIColor* color;
+@end
 
 @implementation CMColourBlockView
 
-@synthesize colour, cornerRadius;
+ARC_SYNTHESIZEAUTO(color);
+ARC_SYNTHESIZEAUTO(cornerRadius);
 
-- (void)setColour:(UIColor *)newColour {
-	[newColour retain];
-	[colour release];
-	colour = newColour;
-	
+@dynamic colour;
+
+- (void)setColour:(UIColor*)newColour {
+	self.color = newColour;
 	[self setNeedsDisplay];
 }
 
+- (UIColor*)colour {
+	return self.color;
+}
+
+#pragma mark -
+
 - (void)setCornerRadius:(CGFloat)newCornerRadius {
-	cornerRadius = newCornerRadius;
+	_cornerRadius = newCornerRadius;
 	[self setNeedsDisplay];
 }
 
 - (void)assignDefaults {
-	cornerRadius = 7.0;		// default
+	_cornerRadius = 7.0;		// default
 	self.opaque = NO;
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    
-    self = [super initWithFrame:frame];
-    if (self) {
+    if ((self = [super initWithFrame:frame])!=nil) {
         [self assignDefaults];
-    }
+		}
     return self;
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	
-    self = [super initWithCoder:decoder];
-    if (self) {
+    if ((self = [super initWithCoder:decoder])!=nil) {
         [self assignDefaults];
-    }
+		}
     return self;
 }
 
 - (void)drawRect:(CGRect)rect {
-	UIColor *fillColor = self.colour;
+	UIColor*fillColor = self.colour;
 	if (nil == fillColor) {
 		fillColor = [UIColor blackColor];
 	}
@@ -77,6 +82,7 @@
 	CGPoint origin = self.bounds.origin;
 	CGSize size = self.bounds.size;
 
+const CGFloat cornerRadius = _cornerRadius;
 	CGContextMoveToPoint(c, origin.x+size.width-cornerRadius, origin.y);
 	CGContextAddArcToPoint(c, origin.x+size.width, origin.y, origin.x+size.width, origin.y+cornerRadius, cornerRadius);
 	CGContextAddLineToPoint(c, origin.x+size.width, origin.y+size.height-cornerRadius);
@@ -94,10 +100,8 @@
 }
 
 - (void)dealloc {
-	[colour release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.color);
+	ARC_SUPERDEALLOC(self);
 }
-
 
 @end

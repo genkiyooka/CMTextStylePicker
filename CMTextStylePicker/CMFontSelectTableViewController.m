@@ -31,9 +31,9 @@
 
 @implementation CMFontSelectTableViewController
 
-@synthesize delegate;
-@synthesize fontFamilyNames, selectedFont;
-
+ARC_SYNTHESIZEOUTLET(delegate);
+ARC_SYNTHESIZEAUTO(fontFamilyNames);
+ARC_SYNTHESIZEAUTO(selectedFont);
 
 #pragma mark -
 #pragma mark FontStyleSelectTableViewControllerDelegate methods
@@ -104,20 +104,19 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		
+        cell = ARC_AUTORELEASE([[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier]);
 		CGRect frame = CGRectMake(10.0, 5.0, 25.0, cell.frame.size.height-5.0);
 		UILabel *selectedLabel = [[UILabel alloc] initWithFrame:frame];
 		selectedLabel.tag = kSelectedLabelTag;
 		selectedLabel.font = [UIFont systemFontOfSize:24.0];
 		[cell.contentView addSubview:selectedLabel];
-		[selectedLabel release];
+		ARC_RELEASE(selectedLabel);
 		
 		frame = CGRectMake(35.0, 5.0, cell.frame.size.width-70.0, cell.frame.size.height-5.0);
 		UILabel *fontNameLabel = [[UILabel alloc] initWithFrame:frame];
 		fontNameLabel.tag = kFontNameLabelTag;
 		[cell.contentView addSubview:fontNameLabel];
-		[fontNameLabel release];
+		ARC_RELEASE(fontNameLabel);
     }
     
     // Configure the cell...
@@ -192,19 +191,22 @@
 #pragma mark UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	CMFontStyleSelectTableViewController *fontStyleSelectTableViewController = [[CMFontStyleSelectTableViewController alloc] initWithNibName:@"CMFontStyleSelectTableViewController" bundle:nil];
-	fontStyleSelectTableViewController.fontFamilyName = [self.fontFamilyNames objectAtIndex:indexPath.row];
-	fontStyleSelectTableViewController.selectedFont = self.selectedFont;
-	fontStyleSelectTableViewController.delegate = self;
-	[self.navigationController pushViewController:fontStyleSelectTableViewController animated:YES];
-	[fontStyleSelectTableViewController release];
+CMFontStyleSelectTableViewController *fontStyleSelectTableViewController = [[CMFontStyleSelectTableViewController alloc] initWithNibName:@"CMFontStyleSelectTableViewController" bundle:nil];
+	if (REQUIRED_NOT_NIL(fontStyleSelectTableViewController))
+		{
+		fontStyleSelectTableViewController.fontFamilyName = [self.fontFamilyNames objectAtIndex:indexPath.row];
+		fontStyleSelectTableViewController.selectedFont = self.selectedFont;
+		fontStyleSelectTableViewController.delegate = self;
+		[self.navigationController pushViewController:fontStyleSelectTableViewController animated:YES];
+		ARC_RELEASE(fontStyleSelectTableViewController);
+		}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *fontName = [self.fontFamilyNames objectAtIndex:indexPath.row];
 	self.selectedFont = [UIFont fontWithName:fontName size:self.selectedFont.pointSize];
 	
-	[delegate fontSelectTableViewController:self didSelectFont:self.selectedFont];
+	[self.delegate fontSelectTableViewController:self didSelectFont:self.selectedFont];
 	[tableView reloadData];
 }
 
@@ -226,10 +228,9 @@
 
 
 - (void)dealloc {
-	[fontFamilyNames release];
-	[selectedFont release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.fontFamilyNames);
+	ARC_DEALLOC_NIL(self.selectedFont);
+	ARC_SUPERDEALLOC(self);
 }
 
 

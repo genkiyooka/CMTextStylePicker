@@ -29,6 +29,11 @@
 		83A21FEF129653880076D5D9 /* CMUpDownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A21FEE129653880076D5D9 /* CMUpDownControl.m */; };
 		83A220EA129669150076D5D9 /* IPhoneDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A220E8129669150076D5D9 /* IPhoneDemoViewController.m */; };
 		83A220EB129669150076D5D9 /* IPhoneDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A220E9129669150076D5D9 /* IPhoneDemoViewController.xib */; };
+		B21F66771CA8CD1A0018EFD9 /* RequiredAppUIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B21F66531CA8CD1A0018EFD9 /* RequiredAppUIKit.m */; };
+		B21F667B1CA8CD1A0018EFD9 /* RequiredCoreFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = B21F665B1CA8CD1A0018EFD9 /* RequiredCoreFoundation.m */; };
+		B21F667E1CA8CD1A0018EFD9 /* RequiredFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = B21F66631CA8CD1A0018EFD9 /* RequiredFoundation.m */; };
+		B21F667F1CA8CD1A0018EFD9 /* RequiredGCD.m in Sources */ = {isa = PBXBuildFile; fileRef = B21F66651CA8CD1A0018EFD9 /* RequiredGCD.m */; };
+		B21F66811CA8CD1A0018EFD9 /* RequiredLogString.m in Sources */ = {isa = PBXBuildFile; fileRef = B21F66691CA8CD1A0018EFD9 /* RequiredLogString.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +72,21 @@
 		83A220E8129669150076D5D9 /* IPhoneDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhoneDemoViewController.m; sourceTree = "<group>"; };
 		83A220E9129669150076D5D9 /* IPhoneDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IPhoneDemoViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* CMTextStylePickerDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CMTextStylePickerDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B21F66521CA8CD1A0018EFD9 /* RequiredAppUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredAppUIKit.h; sourceTree = "<group>"; };
+		B21F66531CA8CD1A0018EFD9 /* RequiredAppUIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequiredAppUIKit.m; sourceTree = "<group>"; };
+		B21F665A1CA8CD1A0018EFD9 /* RequiredCoreFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredCoreFoundation.h; sourceTree = "<group>"; };
+		B21F665B1CA8CD1A0018EFD9 /* RequiredCoreFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequiredCoreFoundation.m; sourceTree = "<group>"; };
+		B21F665C1CA8CD1A0018EFD9 /* RequiredCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredCoreGraphics.h; sourceTree = "<group>"; };
+		B21F66621CA8CD1A0018EFD9 /* RequiredFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredFoundation.h; sourceTree = "<group>"; };
+		B21F66631CA8CD1A0018EFD9 /* RequiredFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequiredFoundation.m; sourceTree = "<group>"; };
+		B21F66641CA8CD1A0018EFD9 /* RequiredGCD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredGCD.h; sourceTree = "<group>"; };
+		B21F66651CA8CD1A0018EFD9 /* RequiredGCD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequiredGCD.m; sourceTree = "<group>"; };
+		B21F66681CA8CD1A0018EFD9 /* RequiredLogString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredLogString.h; sourceTree = "<group>"; };
+		B21F66691CA8CD1A0018EFD9 /* RequiredLogString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequiredLogString.m; sourceTree = "<group>"; };
+		B21F666A1CA8CD1A0018EFD9 /* RequiredMacCompatible.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredMacCompatible.h; sourceTree = "<group>"; };
+		B21F666B1CA8CD1A0018EFD9 /* RequiredNoARC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredNoARC.h; sourceTree = "<group>"; };
+		B21F66701CA8CD1A0018EFD9 /* UCFTypeRefProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCFTypeRefProperty.h; sourceTree = "<group>"; };
+		B21F66711CA8CD1A0018EFD9 /* UFoundationArc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFoundationArc.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +148,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				B21F664A1CA8CD1A0018EFD9 /* WithRequirements */,
 				83A21FC012964B380076D5D9 /* CMTextStylePicker */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
@@ -181,6 +202,29 @@
 			name = CMTextStylePicker;
 			path = ../CMTextStylePicker;
 			sourceTree = SOURCE_ROOT;
+		};
+		B21F664A1CA8CD1A0018EFD9 /* WithRequirements */ = {
+			isa = PBXGroup;
+			children = (
+				B21F66521CA8CD1A0018EFD9 /* RequiredAppUIKit.h */,
+				B21F66531CA8CD1A0018EFD9 /* RequiredAppUIKit.m */,
+				B21F665A1CA8CD1A0018EFD9 /* RequiredCoreFoundation.h */,
+				B21F665B1CA8CD1A0018EFD9 /* RequiredCoreFoundation.m */,
+				B21F665C1CA8CD1A0018EFD9 /* RequiredCoreGraphics.h */,
+				B21F66621CA8CD1A0018EFD9 /* RequiredFoundation.h */,
+				B21F66631CA8CD1A0018EFD9 /* RequiredFoundation.m */,
+				B21F66641CA8CD1A0018EFD9 /* RequiredGCD.h */,
+				B21F66651CA8CD1A0018EFD9 /* RequiredGCD.m */,
+				B21F66681CA8CD1A0018EFD9 /* RequiredLogString.h */,
+				B21F66691CA8CD1A0018EFD9 /* RequiredLogString.m */,
+				B21F666A1CA8CD1A0018EFD9 /* RequiredMacCompatible.h */,
+				B21F666B1CA8CD1A0018EFD9 /* RequiredNoARC.h */,
+				B21F66701CA8CD1A0018EFD9 /* UCFTypeRefProperty.h */,
+				B21F66711CA8CD1A0018EFD9 /* UFoundationArc.h */,
+			);
+			name = WithRequirements;
+			path = ../WithRequirements;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -260,6 +304,11 @@
 				83A21FE01296523F0076D5D9 /* CMColourBlockView.m in Sources */,
 				83A21FEF129653880076D5D9 /* CMUpDownControl.m in Sources */,
 				83A220EA129669150076D5D9 /* IPhoneDemoViewController.m in Sources */,
+				B21F66771CA8CD1A0018EFD9 /* RequiredAppUIKit.m in Sources */,
+				B21F667B1CA8CD1A0018EFD9 /* RequiredCoreFoundation.m in Sources */,
+				B21F667E1CA8CD1A0018EFD9 /* RequiredFoundation.m in Sources */,
+				B21F667F1CA8CD1A0018EFD9 /* RequiredGCD.m in Sources */,
+				B21F66811CA8CD1A0018EFD9 /* RequiredLogString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +319,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -277,6 +328,7 @@
 				GCC_PREFIX_HEADER = CMTextStylePickerDemo_Prefix.pch;
 				INFOPLIST_FILE = "CMTextStylePickerDemo-Info.plist";
 				PRODUCT_NAME = CMTextStylePickerDemo;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -284,11 +336,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CMTextStylePickerDemo_Prefix.pch;
 				INFOPLIST_FILE = "CMTextStylePickerDemo-Info.plist";
 				PRODUCT_NAME = CMTextStylePickerDemo;
+				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

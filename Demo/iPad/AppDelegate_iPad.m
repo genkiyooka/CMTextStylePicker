@@ -30,8 +30,8 @@
 
 @implementation AppDelegate_iPad
 
-@synthesize iPadDemoViewController, window;
-
+ARC_SYNTHESIZEAUTO(iPadDemoViewController);
+ARC_SYNTHESIZEAUTO(window);
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -39,7 +39,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-    [self.window addSubview:iPadDemoViewController.view];
+    [self.window addSubview:self.iPadDemoViewController.view];
 	
     [self.window makeKeyAndVisible];
     
@@ -80,9 +80,9 @@
 
 
 - (void)dealloc {
-	[iPadDemoViewController release];
-    [window release];
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.iPadDemoViewController);
+	ARC_DEALLOC_NIL(self.window);
+	ARC_SUPERDEALLOC(self);
 }
 
 

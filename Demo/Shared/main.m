@@ -27,9 +27,9 @@
 #import <UIKit/UIKit.h>
 
 int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-    [pool release];
+int retVal = 0;
+ARC_BEGIN_AUTORELEASEPOOL
+    retVal = UIApplicationMain(argc, argv, nil, nil);
+ARC_END_AUTORELEASEPOOL;
     return retVal;
 }

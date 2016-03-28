@@ -26,16 +26,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CMUpDownControl : UIControl {
+@interface CMUpDownControl : UIControl
 
-	BOOL _selected;
-	BOOL _topHalfSelected;
-	BOOL _touchNeedsDisplay;
-}
+ARC_BEGIN_IVAR_DECL(CMUpDownControl)
+ARC_IVAR_DECLAREAUTO(BOOL,selected);
+ARC_IVAR_DECLAREAUTO(BOOL,topHalfSelected);
+ARC_IVAR_DECLAREAUTO(BOOL,touchNeedsDisplay);
+ARC_IVAR_DECLAREAUTO(NSInteger,maximumAllowedValue);
+ARC_IVAR_DECLAREAUTO(NSInteger,minimumAllowedValue);
+ARC_IVAR_DECLAREAUTO(NSInteger,value);
+ARC_END_IVAR_DECL(CMUpDownControl)
 
 @property (nonatomic, assign)	NSInteger		maximumAllowedValue;
 @property (nonatomic, assign)	NSInteger		minimumAllowedValue;
-
 @property (nonatomic, assign)	NSInteger		value;
 
 @end

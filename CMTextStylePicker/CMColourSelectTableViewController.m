@@ -34,9 +34,9 @@
 
 @implementation CMColourSelectTableViewController
 
-@synthesize delegate;
-@synthesize availableColours, selectedColour;
-
+ARC_SYNTHESIZEOUTLET(delegate);
+ARC_SYNTHESIZEAUTO(availableColours);
+ARC_SYNTHESIZEAUTO(selectedColour);
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -48,7 +48,7 @@
 		self.title = @"Text Colour";
 	}
 	
-	self.availableColours = [[[NSArray alloc] initWithObjects:
+	self.availableColours = [NSArray arrayWithObjects:
 							  [UIColor blackColor],
 							  [UIColor darkGrayColor],
 							  [UIColor grayColor],
@@ -60,29 +60,8 @@
 							  [UIColor orangeColor],
 							  [UIColor purpleColor],
 							  [UIColor brownColor],
-							  nil] autorelease];
+							  nil];
 }
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
@@ -107,25 +86,27 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"ColourSelectTableCell";
+static NSString* const CellIdentifier = @"ColourSelectTableCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		
-		CGRect frame = CGRectMake(15.0, 5.0, 25.0, cell.frame.size.height-10.0);
-		UILabel *selectedLabel = [[UILabel alloc] initWithFrame:frame];
-		selectedLabel.tag = kSelectedLabelTag;
-		selectedLabel.font = [UIFont systemFontOfSize:24.0];
-		selectedLabel.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];	// transparent
-		[cell.contentView addSubview:selectedLabel];
-		[selectedLabel release];
-		
-		frame = CGRectMake(55.0, 5.0, cell.frame.size.width-85.0, cell.frame.size.height-10.0);
-		CMColourBlockView *colourView = [[CMColourBlockView alloc] initWithFrame:frame];
-		colourView.tag = kcolourViewTag;
-		[cell.contentView addSubview:colourView];
-		[colourView release];
+        cell = ARC_AUTORELEASE([[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier]);
+		if (REQUIRED_NOT_NIL(cell))
+			{
+			CGRect frame = CGRectMake(15.0, 5.0, 25.0, cell.frame.size.height-10.0);
+			UILabel *selectedLabel = [[UILabel alloc] initWithFrame:frame];
+			selectedLabel.tag = kSelectedLabelTag;
+			selectedLabel.font = [UIFont systemFontOfSize:24.0];
+			selectedLabel.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];	// transparent
+			[cell.contentView addSubview:selectedLabel];
+			ARC_RELEASE(selectedLabel);
+			
+			frame = CGRectMake(55.0, 5.0, cell.frame.size.width-85.0, cell.frame.size.height-10.0);
+			CMColourBlockView *colourView = [[CMColourBlockView alloc] initWithFrame:frame];
+			colourView.tag = kcolourViewTag;
+			[cell.contentView addSubview:colourView];
+			ARC_RELEASE(colourView);
+			}
     }
     
     // Configure the cell...
@@ -144,54 +125,14 @@
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	self.selectedColour = [self.availableColours objectAtIndex:indexPath.row];
 	
-	[delegate colourSelectTableViewController:self didSelectColour:self.selectedColour];
+	if (REQUIRED_DELEGATE_SEL(self,colourSelectTableViewController:didSelectColour:))
+		[self.delegate colourSelectTableViewController:self didSelectColour:self.selectedColour];
 	[tableView reloadData];
 }
 
@@ -213,10 +154,9 @@
 
 
 - (void)dealloc {
-	[availableColours release];
-	[selectedColour release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.availableColours);
+	ARC_DEALLOC_NIL(self.selectedColour);
+	ARC_SUPERDEALLOC(self);
 }
 
 

@@ -27,9 +27,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface CMColourBlockView : UIView {
+@interface CMColourBlockView : UIView
 
-}
+ARC_BEGIN_IVAR_DECL(CMColourBlockView)
+ARC_IVAR_DECLAREAUTO(UIColor*,color);
+ARC_IVAR_DECLAREAUTO(CGFloat,cornerRadius);
+ARC_END_IVAR_DECL(CMColourBlockView)
 
 @property (nonatomic, retain)	UIColor			*colour;
 @property (nonatomic, assign)	CGFloat			cornerRadius;

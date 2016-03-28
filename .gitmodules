@@ -1,0 +1,3 @@
+[submodule "WithRequirements"]
+	path = WithRequirements
+	url = https://github.com/genkiyooka/WithRequirements

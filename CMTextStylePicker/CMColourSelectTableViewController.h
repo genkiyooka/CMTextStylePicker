@@ -29,14 +29,18 @@
 @protocol CMColourSelectTableViewControllerDelegate;
 
 
-@interface CMColourSelectTableViewController : UITableViewController {
+@interface CMColourSelectTableViewController : UITableViewController
 
-}
+ARC_BEGIN_IVAR_DECL(CMColourSelectTableViewController)
+ARC_IVAR_DECLAREOUTLET(id<CMColourSelectTableViewControllerDelegate>,delegate);
+ARC_IVAR_DECLAREAUTO(NSArray*,availableColours);
+ARC_IVAR_DECLAREAUTO(UIColor*,selectedColour);
+ARC_END_IVAR_DECL(CMColourSelectTableViewController)
 
-@property (nonatomic, assign)	id<CMColourSelectTableViewControllerDelegate>	delegate;
+@property (ARC_PROP_OUTLET)	id<CMColourSelectTableViewControllerDelegate>	delegate;
 
-@property (nonatomic, retain)	NSArray		*availableColours;
-@property (nonatomic, retain)	UIColor		*selectedColour;
+@property (ARC_PROP_STRONG)	NSArray		*availableColours;
+@property (ARC_PROP_STRONG)	UIColor		*selectedColour;
 
 @end
 

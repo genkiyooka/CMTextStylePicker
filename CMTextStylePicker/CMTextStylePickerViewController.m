@@ -36,7 +36,7 @@
 #pragma mark Private Interface
 
 @interface CMTextStylePickerViewController ()
-@property (nonatomic, retain)	NSArray		*tableLayout;
+@property (ARC_PROP_STRONG)	NSArray		*tableLayout;
 @end
 
 
@@ -45,26 +45,35 @@
 
 @implementation CMTextStylePickerViewController
 
-@synthesize delegate, defaultSettingsSwitchValue, selectedTextColour, selectedFont;
-@synthesize tableLayout, fontSizeControl;
-@synthesize sizeCell, colourCell, fontCell, defaultSettingsCell, applyAsDefaultCell, fontNameLabel, defaultSettingsSwitch;
-@synthesize colourView, doneButtonItem;
+ARC_SYNTHESIZEAUTO(defaultSettingsSwitchValue);
+ARC_SYNTHESIZEAUTO(selectedTextColour);
+ARC_SYNTHESIZEAUTO(selectedFont);
+ARC_SYNTHESIZEAUTO(tableLayout);
+ARC_SYNTHESIZEOUTLET(delegate);
+ARC_SYNTHESIZEOUTLET(applyAsDefaultCell);
+ARC_SYNTHESIZEOUTLET(doneButtonItem);
+ARC_SYNTHESIZEOUTLET(colourCell);
+ARC_SYNTHESIZEOUTLET(colourView);
+ARC_SYNTHESIZEOUTLET(defaultSettingsCell);
+ARC_SYNTHESIZEOUTLET(fontCell);
+ARC_SYNTHESIZEOUTLET(fontSizeControl);
+ARC_SYNTHESIZEOUTLET(fontNameLabel);
+ARC_SYNTHESIZEOUTLET(sizeCell);
+ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 
 + (CMTextStylePickerViewController *)textStylePickerViewController {
 	CMTextStylePickerViewController *textStylePickerViewController = [[CMTextStylePickerViewController alloc] initWithNibName:@"CMTextStylePickerViewController" bundle:nil];
-	return [textStylePickerViewController autorelease];
+	return ARC_AUTORELEASE(textStylePickerViewController);
 }
 
 - (void)notifyDelegateSelectedFontChanged {
-	if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewController:userSelectedFont:)]) {
-		[delegate textStylePickerViewController:self userSelectedFont:self.selectedFont];
-	}
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:userSelectedFont:))
+		[self.delegate textStylePickerViewController:self userSelectedFont:self.selectedFont];
 }
 
 - (void)notifyDelegateSelectedTextColorChanged {
-	if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewController:userSelectedTextColor:)]) {
-		[delegate textStylePickerViewController:self userSelectedTextColor:self.selectedTextColour];
-	}
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:userSelectedTextColor:))
+		[self.delegate textStylePickerViewController:self userSelectedTextColor:self.selectedTextColour];
 }
 
 - (void)enableTextOptionCells {
@@ -104,9 +113,8 @@
 }
 
 - (void)replaceDefaultSettings {
-	if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewController:replaceDefaultStyleWithFont:textColor:)]) {
-		[delegate textStylePickerViewController:self replaceDefaultStyleWithFont:self.selectedFont textColor:self.selectedTextColour];
-	}
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:replaceDefaultStyleWithFont:textColor:))
+		[self.delegate textStylePickerViewController:self replaceDefaultStyleWithFont:self.selectedFont textColor:self.selectedTextColour];
 	
 	self.defaultSettingsSwitchValue = YES;
 	[self.defaultSettingsSwitch setOn:YES animated:YES];
@@ -114,14 +122,13 @@
 }
 
 - (void)updateFontColourSelections {
-	self.fontNameLabel.text = selectedFont.fontName;
-	self.fontSizeControl.value = selectedFont.pointSize;
+	self.fontNameLabel.text = self.selectedFont.fontName;
+	self.fontSizeControl.value = self.selectedFont.pointSize;
 }
 
 - (IBAction)doneAction {
-	if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewControllerIsDone:)]) {
-		[delegate textStylePickerViewControllerIsDone:self];
-	}
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewControllerIsDone:))
+		[self.delegate textStylePickerViewControllerIsDone:self];
 }
 
 - (IBAction)defaultTextSettingsAction:(UISwitch *)defaultSwitch {
@@ -129,16 +136,14 @@
 		
 	if (self.defaultSettingsSwitchValue) {
 		// Use default text style
-		if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewControllerSelectedDefaultStyle:)]) {
-			[delegate textStylePickerViewControllerSelectedDefaultStyle:self];
-		}
+		if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewControllerSelectedDefaultStyle:))
+			[self.delegate textStylePickerViewControllerSelectedDefaultStyle:self];
 		[self disableTextOptionCells];
 	}
 	else {
 		// Use custom text style
-		if (delegate && [delegate respondsToSelector:@selector(textStylePickerViewControllerSelectedCustomStyle:)]) {
-			[delegate textStylePickerViewControllerSelectedCustomStyle:self];
-		}
+		if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewControllerSelectedCustomStyle:))
+			[self.delegate textStylePickerViewControllerSelectedCustomStyle:self];
 		[self enableTextOptionCells];
 	}
 	
@@ -211,27 +216,6 @@
 	}
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -244,82 +228,36 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return [tableLayout count];
+    return [self.tableLayout count];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [[tableLayout objectAtIndex:section] count];
+    return [[self.tableLayout objectAtIndex:section] count];
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-//    static NSString *CellIdentifier = @"Cell";
-//    
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (cell == nil) {
-//        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-//    }
-    
-    UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = [[self.tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark -
 #pragma mark UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = [[self.tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	return cell.bounds.size.height;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSIndexPath *selectedIndexPath = indexPath;
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = [[self.tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (cell == self.sizeCell || cell == self.defaultSettingsCell) {
 		// Disable selection of cell
@@ -330,21 +268,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = [[self.tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (cell == self.fontCell) {
 		CMFontSelectTableViewController *fontSelectTableViewController = [[CMFontSelectTableViewController alloc] initWithNibName:@"CMFontSelectTableViewController" bundle:nil];
 		fontSelectTableViewController.delegate = self;
 		fontSelectTableViewController.selectedFont = self.selectedFont;
 		[self.navigationController pushViewController:fontSelectTableViewController animated:YES];
-		[fontSelectTableViewController release];
+		ARC_RELEASE(fontSelectTableViewController);
 	}
 	else if (cell == self.colourCell) {
 		CMColourSelectTableViewController *colourSelectTableViewController = [[CMColourSelectTableViewController alloc] initWithNibName:@"CMColourSelectTableViewController" bundle:nil];
 		colourSelectTableViewController.delegate = self;
 		colourSelectTableViewController.selectedColour = self.selectedTextColour;
 		[self.navigationController pushViewController:colourSelectTableViewController animated:YES];
-		[colourSelectTableViewController release];
+		ARC_RELEASE(colourSelectTableViewController);
 	}
 	else if (cell == self.applyAsDefaultCell) {
 		// "Replace default settings"
@@ -411,21 +349,20 @@
 
 
 - (void)dealloc {
-	[applyAsDefaultCell release];
-	[colourCell release];
-	[colourView release];
-	[defaultSettingsCell release];
-	[defaultSettingsSwitch release];
-	[doneButtonItem release];
-	[fontCell release];
-	[fontNameLabel release];
-	[fontSizeControl release];
-	[selectedTextColour release];
-	[selectedFont release];
-	[sizeCell release];
-	[tableLayout release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.applyAsDefaultCell);
+	ARC_DEALLOC_NIL(self.colourCell);
+	ARC_DEALLOC_NIL(self.colourView);
+	ARC_DEALLOC_NIL(self.defaultSettingsCell);
+	ARC_DEALLOC_NIL(self.defaultSettingsSwitch);
+	ARC_DEALLOC_NIL(self.doneButtonItem);
+	ARC_DEALLOC_NIL(self.fontCell);
+	ARC_DEALLOC_NIL(self.fontNameLabel);
+	ARC_DEALLOC_NIL(self.fontSizeControl);
+	ARC_DEALLOC_NIL(self.selectedTextColour);
+	ARC_DEALLOC_NIL(self.selectedFont);
+	ARC_DEALLOC_NIL(self.sizeCell);
+	ARC_DEALLOC_NIL(self.tableLayout);
+	ARC_SUPERDEALLOC(self);
 }
 
 

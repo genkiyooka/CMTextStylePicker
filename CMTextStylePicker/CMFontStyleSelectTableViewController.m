@@ -32,10 +32,10 @@
 
 @implementation CMFontStyleSelectTableViewController
 
-@synthesize delegate;
-@synthesize fontFamilyName;
-@synthesize fontNames, selectedFont;
-
+ARC_SYNTHESIZEOUTLET(delegate);
+ARC_SYNTHESIZEAUTO(fontFamilyName);
+ARC_SYNTHESIZEAUTO(fontNames);
+ARC_SYNTHESIZEAUTO(selectedFont);
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -43,33 +43,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	assert(self.fontFamilyName != nil);
-	
-	self.fontNames = [[UIFont fontNamesForFamilyName:self.fontFamilyName]
-					  sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+	if (REQUIRED_NOT_NIL(self.fontFamilyName))
+		{
+		self.fontNames = [[UIFont fontNamesForFamilyName:self.fontFamilyName]
+						  sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+		}
 }
 
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
@@ -94,24 +74,27 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"FontStyleSelectTableCell";
+static NSString* const CellIdentifier = @"FontStyleSelectTableCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		if (REQUIRED_NOT_NIL(cell))
+			{
+			ARC_AUTORELEASE(cell);
 		CGRect frame = CGRectMake(10.0, 5.0, 25.0, cell.frame.size.height-5.0);
 		UILabel *selectedLabel = [[UILabel alloc] initWithFrame:frame];
-		selectedLabel.tag = kSelectedLabelTag;
-		selectedLabel.font = [UIFont systemFontOfSize:24.0];
-		[cell.contentView addSubview:selectedLabel];
-		[selectedLabel release];
-		
-		frame = CGRectMake(35.0, 5.0, cell.frame.size.width-70.0, cell.frame.size.height-5.0);
-		UILabel *fontNameLabel = [[UILabel alloc] initWithFrame:frame];
-		fontNameLabel.tag = kFontNameLabelTag;
-		[cell.contentView addSubview:fontNameLabel];
-		[fontNameLabel release];
+			selectedLabel.tag = kSelectedLabelTag;
+			selectedLabel.font = [UIFont systemFontOfSize:24.0];
+			[cell.contentView addSubview:selectedLabel];
+			ARC_RELEASE(selectedLabel);
+			
+			frame = CGRectMake(35.0, 5.0, cell.frame.size.width-70.0, cell.frame.size.height-5.0);
+			UILabel *fontNameLabel = [[UILabel alloc] initWithFrame:frame];
+			fontNameLabel.tag = kFontNameLabelTag;
+			[cell.contentView addSubview:fontNameLabel];
+			ARC_RELEASE(fontNameLabel);
+			}
     }
     
     // Configure the cell...
@@ -132,47 +115,6 @@
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -180,7 +122,8 @@
 	NSString *fontName = [self.fontNames objectAtIndex:indexPath.row];
 	self.selectedFont = [UIFont fontWithName:fontName size:self.selectedFont.pointSize];
 	
-	[delegate fontStyleSelectTableViewController:self didSelectFont:self.selectedFont];
+	if (REQUIRED_DELEGATE_SEL(self,fontStyleSelectTableViewController:didSelectFont:))
+		[self.delegate fontStyleSelectTableViewController:self didSelectFont:self.selectedFont];
 	[tableView reloadData];
 }
 
@@ -202,11 +145,10 @@
 
 
 - (void)dealloc {
-	[fontFamilyName release];
-	[fontNames release];
-	[selectedFont release];
-	
-    [super dealloc];
+	ARC_DEALLOC_NIL(self.fontFamilyName);
+	ARC_DEALLOC_NIL(self.fontNames);
+	ARC_DEALLOC_NIL(self.selectedFont);
+	ARC_SUPERDEALLOC(self);
 }
 
 

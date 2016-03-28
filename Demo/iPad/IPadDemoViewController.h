@@ -28,12 +28,14 @@
 #import "CMTextStylePickerViewController.h"
 
 
-@interface IPadDemoViewController : UIViewController <CMTextStylePickerViewControllerDelegate, UIPopoverControllerDelegate> {
-@private
-	CGFloat					mainTextViewOriginalHeight;
-}
+@interface IPadDemoViewController : UIViewController <CMTextStylePickerViewControllerDelegate, UIPopoverControllerDelegate>
 
-@property (nonatomic, retain)	IBOutlet	UITextView	*mainTextView;
+ARC_BEGIN_IVAR_DECL(IPadDemoViewController)
+ARC_IVAR_DECLAREAUTO(UITextView*,mainTextView);
+ARC_IVAR_DECLAREAUTO(CGFloat,mainTextViewOriginalHeight);
+ARC_END_IVAR_DECL(IPadDemoViewController)
+
+@property (ARC_PROP_STRONG)	IBOutlet	UITextView	*mainTextView;
 
 - (IBAction)actionsButtonPressed:(id)sender;
 
