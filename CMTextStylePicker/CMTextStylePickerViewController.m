@@ -29,6 +29,20 @@
 #import "CMColourBlockView.h"
 #import "CMUpDownControl.h"
 
+CGSize CMTextStylePickerViewControllerContentSizeForViewInPopover = {320,330};
+
+static inline void UIViewControllerSetContentSizeForViewInPopover(UIViewController* vc) {
+	if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
+		{
+#ifdef __IPHONE_7_0
+		vc.preferredContentSize = CMTextStylePickerViewControllerContentSizeForViewInPopover;
+#else
+		vc.contentSizeForViewInPopover = CMTextStylePickerViewControllerContentSizeForViewInPopover;
+#endif
+		}
+}
+
+
 #define kDisabledCellAlpha		0.4
 
 
@@ -212,9 +226,10 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 	}
 	else {
 		// iPad UI
-		self.contentSizeForViewInPopover = CGSizeMake(320.0, 330.0);
+		self.contentSizeForViewInPopover = CMTextStylePickerViewControllerContentSizeForViewInPopover;
 	}
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
@@ -274,6 +289,7 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 		CMFontSelectTableViewController *fontSelectTableViewController = [[CMFontSelectTableViewController alloc] initWithNibName:@"CMFontSelectTableViewController" bundle:nil];
 		fontSelectTableViewController.delegate = self;
 		fontSelectTableViewController.selectedFont = self.selectedFont;
+		UIViewControllerSetContentSizeForViewInPopover(fontSelectTableViewController);
 		[self.navigationController pushViewController:fontSelectTableViewController animated:YES];
 		ARC_RELEASE(fontSelectTableViewController);
 	}
@@ -281,6 +297,7 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 		CMColourSelectTableViewController *colourSelectTableViewController = [[CMColourSelectTableViewController alloc] initWithNibName:@"CMColourSelectTableViewController" bundle:nil];
 		colourSelectTableViewController.delegate = self;
 		colourSelectTableViewController.selectedColour = self.selectedTextColour;
+		UIViewControllerSetContentSizeForViewInPopover(colourSelectTableViewController);
 		[self.navigationController pushViewController:colourSelectTableViewController animated:YES];
 		ARC_RELEASE(colourSelectTableViewController);
 	}
@@ -346,6 +363,25 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 	self.fontSizeControl = nil;
 	self.sizeCell = nil;
 }
+
+#pragma mark -
+
+-(UIPopoverController*) presentPopoverWithButtonBarItem:(UIBarButtonItem*)buttonBarItem popoverDelegate:(id<UIPopoverControllerDelegate>)popoverDelegate {
+UIPopoverController* popoverController = nil;
+UINavigationController *actionsNavigationController = ARC_AUTORELEASE([[UINavigationController alloc] initWithRootViewController:self]);
+Class classUIPopoverController = NSClassFromString(@"UIPopoverController");
+	if (REQUIRED_NOT_NIL(classUIPopoverController)) {
+		popoverController = ARC_AUTORELEASE([[classUIPopoverController alloc] initWithContentViewController:actionsNavigationController]);
+		if (REQUIRED_NOT_NIL(popoverController))
+			{
+			popoverController.delegate = popoverDelegate;
+			[popoverController presentPopoverFromBarButtonItem:(UIBarButtonItem*)buttonBarItem
+									  permittedArrowDirections:UIPopoverArrowDirectionAny
+													  animated:YES];
+			}
+		}
+	return popoverController;
+}			
 
 
 - (void)dealloc {

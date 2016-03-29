@@ -64,7 +64,7 @@ ARC_SYNTHESIZEAUTO(defaultTextColor);
 		if (classPopoverController) {
 			UIPopoverController *popoverController = ARC_AUTORELEASE([[classPopoverController alloc] initWithContentViewController:actionsNavigationController]);
 			popoverController.delegate = self;
-			[popoverController presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+			[popoverController presentPopoverFromBarButtonItem:(UIBarButtonItem*)sender
 									  permittedArrowDirections:UIPopoverArrowDirectionAny
 													  animated:YES];
 			

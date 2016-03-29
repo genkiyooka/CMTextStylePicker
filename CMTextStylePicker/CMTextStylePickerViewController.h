@@ -30,7 +30,7 @@
 #import "CMFontSelectTableViewController.h"
 #import "CMUpDownControl.h"
 
-
+@class UIPopoverController;
 @class CMColourBlockView;
 @protocol CMTextStylePickerViewControllerDelegate;
 
@@ -74,6 +74,8 @@ ARC_END_IVAR_DECL(CMTextStylePickerViewController)
 - (IBAction)doneAction;
 - (IBAction)defaultTextSettingsAction:(UISwitch *)defaultSwitch;
 - (IBAction)fontSizeValueChanged:(CMUpDownControl *)control;
+
+- (UIPopoverController*)presentPopoverWithButtonBarItem:(UIBarButtonItem*)buttonBarItem popoverDelegate:(id<UIPopoverControllerDelegate>)popoverDelegate;
 
 @end
 
