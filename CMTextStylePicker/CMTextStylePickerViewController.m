@@ -61,13 +61,16 @@ static inline void UIViewControllerSetContentSizeForViewInPopover(UIViewControll
 
 ARC_SYNTHESIZEAUTO(defaultSettingsSwitchValue);
 ARC_SYNTHESIZEAUTO(selectedTextColour);
+ARC_SYNTHESIZEAUTO(selectedStrokeColour);
 ARC_SYNTHESIZEAUTO(selectedFont);
 ARC_SYNTHESIZEAUTO(tableLayout);
 ARC_SYNTHESIZEOUTLET(delegate);
 ARC_SYNTHESIZEOUTLET(applyAsDefaultCell);
 ARC_SYNTHESIZEOUTLET(doneButtonItem);
 ARC_SYNTHESIZEOUTLET(colourCell);
+ARC_SYNTHESIZEOUTLET(strokeColourCell);
 ARC_SYNTHESIZEOUTLET(colourView);
+ARC_SYNTHESIZEOUTLET(strokeColourView);
 ARC_SYNTHESIZEOUTLET(defaultSettingsCell);
 ARC_SYNTHESIZEOUTLET(fontCell);
 ARC_SYNTHESIZEOUTLET(fontSizeControl);
@@ -88,6 +91,11 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 - (void)notifyDelegateSelectedTextColorChanged {
 	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:userSelectedTextColor:))
 		[self.delegate textStylePickerViewController:self userSelectedTextColor:self.selectedTextColour];
+}
+
+- (void)notifyDelegateSelectedStrokeColorChanged {
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:userSelectedStrokeColor:))
+		[self.delegate textStylePickerViewController:self userSelectedStrokeColor:self.selectedStrokeColour];
 }
 
 - (void)enableTextOptionCells {
@@ -127,8 +135,11 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 }
 
 - (void)replaceDefaultSettings {
-	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:replaceDefaultStyleWithFont:textColor:))
-		[self.delegate textStylePickerViewController:self replaceDefaultStyleWithFont:self.selectedFont textColor:self.selectedTextColour];
+	if (REQUIRED_DELEGATE_SEL(self,textStylePickerViewController:replaceDefaultStyleWithFont:textColor:strokeColor:))
+		[self.delegate textStylePickerViewController:self
+			replaceDefaultStyleWithFont:self.selectedFont 
+			textColor:self.selectedTextColour
+			strokeColor:self.selectedStrokeColour];
 	
 	self.defaultSettingsSwitchValue = YES;
 	[self.defaultSettingsSwitch setOn:YES animated:YES];
@@ -176,10 +187,20 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 #pragma mark  -
 #pragma mark ColourSelectTableViewControllerDelegate methods
 
-- (void)colourSelectTableViewController:(CMColourSelectTableViewController *)colourSelectTableViewController didSelectColour:(UIColor *)colour {
-	self.selectedTextColour = colour;
-	self.colourView.colour = colour;	// Update the colour swatch
-	[self notifyDelegateSelectedTextColorChanged];
+- (void)colourSelectTableViewController:(CMColourSelectTableViewController*)colourSelectTableViewController didSelectColour:(UIColor *)colour {
+NSLOG_METHOD(colourSelectTableViewController.identifier);
+	if ([colourSelectTableViewController.identifier isEqualToString:@"selectedTextColour"])
+		{
+		self.selectedTextColour = colour;
+		self.colourView.colour = colour;	// Update the colour swatch
+		[self notifyDelegateSelectedTextColorChanged];
+		}
+	else if ([colourSelectTableViewController.identifier isEqualToString:@"selectedStrokeColour"])
+		{
+		self.selectedStrokeColour = colour;
+		self.strokeColourView.colour = colour;	// Update the colour swatch
+		[self notifyDelegateSelectedStrokeColorChanged];
+		}
 }
 
 
@@ -202,7 +223,7 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 	self.title = @"Text Style";
 		
 	self.fontSizeControl.minimumAllowedValue = 8;
-	self.fontSizeControl.maximumAllowedValue = 72;
+	self.fontSizeControl.maximumAllowedValue = 180;
 	
 	[self updateFontColourSelections];
 	
@@ -214,6 +235,7 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 						 self.sizeCell,
 						 self.fontCell,
 						 self.colourCell,
+						 self.strokeColourCell,
 						 nil],
 						[NSArray arrayWithObjects:
 						 self.applyAsDefaultCell,
@@ -297,6 +319,16 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 		CMColourSelectTableViewController *colourSelectTableViewController = [[CMColourSelectTableViewController alloc] initWithNibName:@"CMColourSelectTableViewController" bundle:nil];
 		colourSelectTableViewController.delegate = self;
 		colourSelectTableViewController.selectedColour = self.selectedTextColour;
+		colourSelectTableViewController.identifier = @"selectedTextColour";
+		UIViewControllerSetContentSizeForViewInPopover(colourSelectTableViewController);
+		[self.navigationController pushViewController:colourSelectTableViewController animated:YES];
+		ARC_RELEASE(colourSelectTableViewController);
+	}
+	else if (cell == self.strokeColourCell) {
+		CMColourSelectTableViewController *colourSelectTableViewController = [[CMColourSelectTableViewController alloc] initWithNibName:@"CMColourSelectTableViewController" bundle:nil];
+		colourSelectTableViewController.delegate = self;
+		colourSelectTableViewController.selectedColour = self.selectedStrokeColour;
+		colourSelectTableViewController.identifier = @"selectedStrokeColour";
 		UIViewControllerSetContentSizeForViewInPopover(colourSelectTableViewController);
 		[self.navigationController pushViewController:colourSelectTableViewController animated:YES];
 		ARC_RELEASE(colourSelectTableViewController);
@@ -311,6 +343,9 @@ ARC_SYNTHESIZEOUTLET(defaultSettingsSwitch);
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (cell == self.colourCell) {
 		self.colourView.colour = self.selectedTextColour;
+	}
+	else if (cell == self.strokeColourCell) {
+		self.strokeColourView.colour = self.selectedStrokeColour;
 	}
 
 	if (self.defaultSettingsSwitchValue == NO) {
@@ -396,6 +431,7 @@ Class classUIPopoverController = NSClassFromString(@"UIPopoverController");
 	ARC_DEALLOC_NIL(self.fontSizeControl);
 	ARC_DEALLOC_NIL(self.selectedTextColour);
 	ARC_DEALLOC_NIL(self.selectedFont);
+	ARC_DEALLOC_NIL(self.selectedStrokeColour);
 	ARC_DEALLOC_NIL(self.sizeCell);
 	ARC_DEALLOC_NIL(self.tableLayout);
 	ARC_SUPERDEALLOC(self);

@@ -39,13 +39,16 @@
 ARC_BEGIN_IVAR_DECL(CMTextStylePickerViewController)
 ARC_IVAR_DECLAREAUTO(BOOL,defaultSettingsSwitchValue);
 ARC_IVAR_DECLAREAUTO(UIColor*,selectedTextColour);
+ARC_IVAR_DECLAREAUTO(UIColor*,selectedStrokeColour);
 ARC_IVAR_DECLAREAUTO(UIFont*,selectedFont);
 ARC_IVAR_DECLAREAUTO(NSArray*,tableLayout);
 ARC_IVAR_DECLAREOUTLET(id<CMTextStylePickerViewControllerDelegate>,delegate);
 ARC_IVAR_DECLAREOUTLET(UITableViewCell*,applyAsDefaultCell);
 ARC_IVAR_DECLAREOUTLET(UIBarButtonItem*,doneButtonItem);
 ARC_IVAR_DECLAREOUTLET(UITableViewCell*,colourCell);
+ARC_IVAR_DECLAREOUTLET(UITableViewCell*,strokeColourCell);
 ARC_IVAR_DECLAREOUTLET(CMColourBlockView*,colourView);
+ARC_IVAR_DECLAREOUTLET(CMColourBlockView*,strokeColourView);
 ARC_IVAR_DECLAREOUTLET(UITableViewCell*,defaultSettingsCell);
 ARC_IVAR_DECLAREOUTLET(UISwitch*,defaultSettingsSwitch);
 ARC_IVAR_DECLAREOUTLET(UITableViewCell*,fontCell);
@@ -57,12 +60,15 @@ ARC_END_IVAR_DECL(CMTextStylePickerViewController)
 
 @property (nonatomic, assign)	BOOL		defaultSettingsSwitchValue;
 @property (ARC_PROP_STRONG)		UIColor		*selectedTextColour;
+@property (ARC_PROP_STRONG)		UIColor		*selectedStrokeColour;
 @property (ARC_PROP_STRONG)		UIFont		*selectedFont;
 
 @property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*applyAsDefaultCell;
 @property (ARC_PROP_OUTLET)		IBOutlet	UIBarButtonItem		*doneButtonItem;
 @property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*colourCell;
+@property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*strokeColourCell;
 @property (ARC_PROP_OUTLET)		IBOutlet	CMColourBlockView	*colourView;
+@property (ARC_PROP_OUTLET)		IBOutlet	CMColourBlockView	*strokeColourView;
 @property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*defaultSettingsCell;
 @property (ARC_PROP_OUTLET)		IBOutlet	UISwitch			*defaultSettingsSwitch;
 @property (ARC_PROP_OUTLET)		IBOutlet	UITableViewCell		*fontCell;
@@ -84,11 +90,12 @@ ARC_END_IVAR_DECL(CMTextStylePickerViewController)
 @optional
 - (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController userSelectedFont:(UIFont *)font;
 - (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController userSelectedTextColor:(UIColor *)textColor;
+- (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController userSelectedStrokeColor:(UIColor *)strokeColor;
 
 - (void)textStylePickerViewControllerSelectedCustomStyle:(CMTextStylePickerViewController *)textStylePickerViewController;
 - (void)textStylePickerViewControllerSelectedDefaultStyle:(CMTextStylePickerViewController *)textStylePickerViewController;
 
-- (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController replaceDefaultStyleWithFont:(UIFont *)font textColor:(UIColor *)textColor;
+- (void)textStylePickerViewController:(CMTextStylePickerViewController *)textStylePickerViewController replaceDefaultStyleWithFont:(UIFont *)font textColor:(UIColor *)textColor strokeColor:(UIColor*)strokeColor;
 
 - (void)textStylePickerViewControllerIsDone:(CMTextStylePickerViewController *)textStylePickerViewController;
 @end

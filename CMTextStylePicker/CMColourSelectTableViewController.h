@@ -35,12 +35,14 @@ ARC_BEGIN_IVAR_DECL(CMColourSelectTableViewController)
 ARC_IVAR_DECLAREOUTLET(id<CMColourSelectTableViewControllerDelegate>,delegate);
 ARC_IVAR_DECLAREAUTO(NSArray*,availableColours);
 ARC_IVAR_DECLAREAUTO(UIColor*,selectedColour);
+ARC_IVAR_DECLAREAUTO(NSString*,identifier);
 ARC_END_IVAR_DECL(CMColourSelectTableViewController)
 
 @property (ARC_PROP_OUTLET)	id<CMColourSelectTableViewControllerDelegate>	delegate;
 
 @property (ARC_PROP_STRONG)	NSArray		*availableColours;
 @property (ARC_PROP_STRONG)	UIColor		*selectedColour;
+@property (copy)			NSString	*identifier;
 
 @end
 

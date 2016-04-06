@@ -37,6 +37,7 @@
 ARC_SYNTHESIZEOUTLET(delegate);
 ARC_SYNTHESIZEAUTO(availableColours);
 ARC_SYNTHESIZEAUTO(selectedColour);
+ARC_SYNTHESIZEAUTO(identifier);
 
 #pragma mark -
 #pragma mark View lifecycle

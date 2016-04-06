@@ -58,14 +58,14 @@ ARC_SYNTHESIZEAUTO(cornerRadius);
 	self.opaque = NO;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])!=nil) {
         [self assignDefaults];
 		}
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
     if ((self = [super initWithCoder:decoder])!=nil) {
         [self assignDefaults];
 		}
